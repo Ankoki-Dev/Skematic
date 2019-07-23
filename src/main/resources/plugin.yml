@@ -1,0 +1,9 @@
+name: Skematic
+author: Efnilite
+main: com.efnilite.skematic.Skematic
+description: The Skript addon for Redaktor and Fawe
+version: 3.0
+api-version: 1.13
+website: https://forums.skunity.com/resources/skematic.671/
+depend: [Skript]
+softdepend: [FastAsyncWorldEdit, Redaktor]

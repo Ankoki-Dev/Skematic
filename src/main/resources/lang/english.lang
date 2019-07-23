@@ -1,0 +1,10 @@
+version: 3.0
+fawe schematicformat:
+    schematic: schematic, mcedit, mce
+    structure: structure, nbt
+    png: png, image
+    fawe: fawe
+fawe pasteoption:
+    air: air
+    entities: entities, mobs, animals
+    biomes: biome, biomes
