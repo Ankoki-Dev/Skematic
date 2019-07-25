@@ -2,7 +2,7 @@ package com.efnilite.skematic;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
-import com.efnilite.skematic.elements.fawe.FaweTypes;
+import com.efnilite.skematic.elements.FaweTypes;
 import com.efnilite.skematic.util.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
