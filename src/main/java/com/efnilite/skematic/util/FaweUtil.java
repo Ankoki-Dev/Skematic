@@ -1,10 +1,17 @@
 package com.efnilite.skematic.util;
 
 import ch.njol.skript.aliases.ItemType;
+import com.boydti.fawe.Fawe;
 import com.boydti.fawe.FaweAPI;
-import com.boydti.fawe.object.FawePlayer;
+import com.boydti.fawe.FaweCache;
+import com.boydti.fawe.bukkit.BukkitPlayer;
 import com.boydti.fawe.object.schematic.Schematic;
 import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.LocalSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.bukkit.BukkitPlayer;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.function.pattern.BlockPattern;
 import com.sk89q.worldedit.function.pattern.Pattern;
 import com.sk89q.worldedit.function.pattern.RandomPattern;
@@ -40,8 +47,32 @@ public class FaweUtil {
      *
      * @return  a FawePlayer
      */
-    public static FawePlayer getPlayer(Player player) {
-        return FaweAPI.wrapPlayer(player);
+    public static com.sk89q.worldedit.entity.Player getPlayer(Player player) {
+        return WorldEditPlugin.getInstance().getCachedPlayer(player);
+    }
+
+    /**
+     * Gets the editsession of a player
+     *
+     * @param   player
+     *          The player of the editsession
+     *
+     * @return  the editsession
+     */
+    public static EditSession getEditSession(Player player) {
+        return WorldEditPlugin.getInstance().getSession(player).createEditSession(getPlayer(player));
+    }
+
+    /**
+     * Gets the local session of a player
+     *
+     * @param   player
+     *          The player of the local session
+     *
+     * @return  the local session
+     */
+    public static LocalSession getLocalSession(Player player) {
+        return WorldEditPlugin.getInstance().getSession(player);
     }
 
     /**
@@ -96,13 +127,13 @@ public class FaweUtil {
      */
     public static Schematic toSchematic(File file) {
         try {
-            Schematic schematic = FaweAPI.load(file);
+            Clipboard clipboard = FaweAPI.load(file);
 
-            if (schematic.getClipboard() == null) {
+            if (clipboard == null) {
                 return null;
             }
 
-            return new Schematic(schematic.getClipboard());
+            return new Schematic(clipboard);
         } catch (IOException e) {
             return null;
         }

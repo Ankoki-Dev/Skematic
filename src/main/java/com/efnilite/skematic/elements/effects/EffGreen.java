@@ -9,9 +9,11 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+import com.efnilite.skematic.Skematic;
 import com.efnilite.skematic.util.FaweUtil;
 import com.sk89q.worldedit.EditSession;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.event.Event;
 
 @Name("Fawe - Greenify")
@@ -41,6 +43,13 @@ public class EffGreen extends Effect {
         Number radius = this.radius.getSingle(e);
 
         if (radius == null || location == null) {
+            return;
+        }
+
+        World world = location.getWorld();
+
+        if (world == null) {
+            Skematic.error("World is null (" + getClass().getName() + ") - be sure to set the world of a location!");
             return;
         }
 

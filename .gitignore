@@ -1,0 +1,16 @@
+# Gitignore
+
+# Gradle folders
+.gradle/
+gradle/
+.idea/
+build/
+
+# Remaining folders
+libs/
+
+# Gradle files
+gradlew
+gradlew.bat
+settings.gradle
+build.gradle

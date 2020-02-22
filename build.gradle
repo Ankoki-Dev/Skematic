@@ -3,9 +3,7 @@ plugins {
 }
 
 group 'com.efnilite'
-version '3.0'
-
-sourceCompatibility = 1.8
+version '1.0'
 
 repositories {
     mavenCentral()
@@ -14,8 +12,9 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
+    implementation 'org.jetbrains:annotations:18.0.0'
+
     compile files("libs/fawe.jar")
     compile files("libs/skript.jar")
-    compile files("libs/redaktor.jar")
-    compile files("libs/spigot-1.13.jar")
+    compile files("libs/spigot-1.15.jar")
 }

@@ -13,6 +13,7 @@ import com.efnilite.skematic.util.FaweUtil;
 import com.sk89q.worldedit.EditSession;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 
@@ -54,7 +55,13 @@ public class EffAsyncSet extends Effect {
             return;
         }
 
-        EditSession session = FaweUtil.getEditSession(Bukkit.getServer().getWorld(location.getWorld().getName()));
+        World world = location.getWorld();
+
+        if (world == null) {
+            return;
+        }
+
+        EditSession session = FaweUtil.getEditSession(world);
         session.setBlock(FaweUtil.toVector(location), FaweUtil.parsePattern(blocks));
         session.flushQueue();
     }

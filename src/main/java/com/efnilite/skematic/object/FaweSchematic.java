@@ -70,7 +70,7 @@ public class FaweSchematic {
     public void paste(World world, BlockVector3 vector, Set<FaweOptions> options) {
         EditSession session = FaweUtil.getEditSession(Bukkit.getWorld(world.getName()));
         Operation operation = new ClipboardHolder(clipboard)
-                .createPaste(session)
+                .createPaste(session.getRegionExtent())
                 .to(vector)
                 .ignoreAirBlocks(!options.contains(FaweOptions.AIR))
                 .ignoreEntities(!options.contains(FaweOptions.ENTITIES))

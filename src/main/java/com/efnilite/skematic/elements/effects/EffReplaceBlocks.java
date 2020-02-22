@@ -10,11 +10,14 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+import com.efnilite.skematic.Skematic;
 import com.efnilite.skematic.util.FaweUtil;
 import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.world.block.BaseBlock;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.event.Event;
 
 import java.util.HashSet;
@@ -51,17 +54,25 @@ public class EffReplaceBlocks extends Effect {
         ItemType[] replacement = this.replacement.getArray(e);
         CuboidRegion cuboid = this.cuboid.getSingle(e);
 
-        if (cuboid == null || target == null || replacement == null) {
+        if (cuboid == null || target == null || replacement == null || cuboid.getWorld() == null) {
             return;
         }
+
+        World world = Bukkit.getServer().getWorld(cuboid.getWorld().getName());
+
+        if (world == null) {
+            Skematic.error("World is null (" + getClass().getName() + ") - be sure to set the world of a location!");
+            return;
+        }
+
 
         Set<BaseBlock> set = new HashSet<>();
         for (ItemType type : target) {
             set.add(new BaseBlock(type.getRandom().getType().getId(), type.getRandom().getAmount()));
         }
 
-        EditSession session = FaweUtil.getEditSession(Bukkit.getServer().getWorld(cuboid.getWorld().getName()));
-        session.replaceBlocks(cuboid, set, FaweUtil.parsePattern(replacement));
+        EditSession session = FaweUtil.getEditSession(world);
+        //todo fix replace session.setBlocks(cuboid, set, FaweUtil.parsePattern(replacement));
         session.flushQueue();
     }
 

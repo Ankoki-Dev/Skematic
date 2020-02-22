@@ -1,4 +1,4 @@
-package com.efnilite.skematic.elements;
+package com.efnilite.skematic;
 
 import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.classes.Parser;

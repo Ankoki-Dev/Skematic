@@ -9,11 +9,13 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+import com.efnilite.skematic.Skematic;
 import com.efnilite.skematic.object.FaweOptions;
 import com.efnilite.skematic.object.FaweSchematic;
 import com.efnilite.skematic.util.FaweUtil;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.event.Event;
 
 import java.util.Arrays;
@@ -53,8 +55,15 @@ public class EffCuboidPaste extends Effect {
             return;
         }
 
+        World world = location.getWorld();
+
+        if (world == null) {
+            Skematic.error("World is null (" + getClass().getName() + ") - be sure to set the world of a location!");
+            return;
+        }
+
         HashSet<FaweOptions> optionsSet = new HashSet<>(Arrays.asList(options));
-        new FaweSchematic(cuboid).paste(FaweUtil.getWorld(location.getWorld().getName()), FaweUtil.toVector(location), optionsSet);
+        new FaweSchematic(cuboid).paste(FaweUtil.getWorld(world.getName()), FaweUtil.toVector(location), optionsSet);
     }
 
     @Override

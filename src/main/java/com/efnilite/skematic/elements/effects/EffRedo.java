@@ -42,8 +42,8 @@ public class EffRedo extends Effect {
             return;
         }
 
-        EditSession session = FaweUtil.getPlayer(player).getNewEditSession();
-        session.redo(FaweUtil.getPlayer(player).getNewEditSession());
+        EditSession session = FaweUtil.getEditSession(player);
+        session.redo(session);
         session.flushQueue();
     }
 

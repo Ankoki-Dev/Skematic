@@ -9,10 +9,13 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+import com.efnilite.skematic.Skematic;
 import com.efnilite.skematic.util.FaweUtil;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.regions.Region;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.event.Event;
 
 @Name("Fawe - Fill Region")
@@ -41,12 +44,19 @@ public class EffCuboidFill extends Effect {
         CuboidRegion cuboid = this.cuboid.getSingle(e);
         ItemType[] blocks = this.blocks.getArray(e);
 
-        if (cuboid == null || blocks == null) {
+        if (cuboid == null || blocks == null || cuboid.getWorld() == null) {
             return;
         }
 
-        EditSession session = FaweUtil.getEditSession(Bukkit.getServer().getWorld(cuboid.getWorld().getName()));
-        session.setBlocks(cuboid, FaweUtil.parsePattern(blocks));
+        World world = Bukkit.getServer().getWorld(cuboid.getWorld().getName());
+
+        if (world == null) {
+            Skematic.error("World is null (" + getClass().getName() + ") - be sure to set the world of a location!");
+            return;
+        }
+
+        EditSession session = FaweUtil.getEditSession(world);
+        session.setBlocks((Region) cuboid, FaweUtil.parsePattern(blocks));
         session.flushQueue();
     }
 
