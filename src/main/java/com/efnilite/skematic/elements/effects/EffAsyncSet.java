@@ -11,9 +11,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import com.efnilite.skematic.util.FaweUtil;
 import com.sk89q.worldedit.EditSession;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 
@@ -55,13 +53,7 @@ public class EffAsyncSet extends Effect {
             return;
         }
 
-        World world = location.getWorld();
-
-        if (world == null) {
-            return;
-        }
-
-        EditSession session = FaweUtil.getEditSession(world);
+        EditSession session = FaweUtil.getEditSession(location.getWorld());
         session.setBlock(FaweUtil.toVector(location), FaweUtil.parsePattern(blocks));
         session.flushQueue();
     }

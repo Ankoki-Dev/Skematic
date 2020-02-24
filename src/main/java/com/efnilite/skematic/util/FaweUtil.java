@@ -1,15 +1,11 @@
 package com.efnilite.skematic.util;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.aliases.ItemType;
-import com.boydti.fawe.Fawe;
 import com.boydti.fawe.FaweAPI;
-import com.boydti.fawe.FaweCache;
-import com.boydti.fawe.bukkit.BukkitPlayer;
 import com.boydti.fawe.object.schematic.Schematic;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.LocalSession;
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.function.pattern.BlockPattern;
@@ -35,8 +31,13 @@ public class FaweUtil {
      *
      * @return  the world
      */
-    public static World getWorld(String world) {
-        return FaweAPI.getWorld(world);
+    public static World getWorld(org.bukkit.World world) {
+        if (world == null) {
+            Skript.error("World is null - be sure to set the world of a location!");
+            throw new IllegalStateException("World is null");
+        }
+
+        return FaweAPI.getWorld(world.getName());
     }
 
     /**
@@ -60,6 +61,11 @@ public class FaweUtil {
      * @return  the editsession
      */
     public static EditSession getEditSession(Player player) {
+        if (player == null) {
+            Skript.error("Player is null");
+            throw new IllegalStateException("World is null");
+        }
+
         return WorldEditPlugin.getInstance().getSession(player).createEditSession(getPlayer(player));
     }
 
@@ -72,6 +78,11 @@ public class FaweUtil {
      * @return  the local session
      */
     public static LocalSession getLocalSession(Player player) {
+        if (player == null) {
+            Skript.error("Player is null");
+            throw new IllegalStateException("World is null");
+        }
+
         return WorldEditPlugin.getInstance().getSession(player);
     }
 
@@ -84,7 +95,24 @@ public class FaweUtil {
      * @return  the editsession
      */
     public static EditSession getEditSession(org.bukkit.World world) {
-        return FaweAPI.getEditSessionBuilder(getWorld(world.getName())).autoQueue(true).build();
+        return getEditSession(getWorld(world));
+    }
+
+    /**
+     * Gets the editsession of a world
+     *
+     * @param   world
+     *          The world the editsession is going to be in
+     *
+     * @return  the editsession
+     */
+    public static EditSession getEditSession(World world) {
+        if (world == null) {
+            Skript.error("World is null - be sure to set the world of a location!");
+            throw new IllegalStateException("World is null");
+        }
+
+        return FaweAPI.getEditSessionBuilder(world).autoQueue(true).build();
     }
 
     /**
@@ -130,7 +158,7 @@ public class FaweUtil {
             Clipboard clipboard = FaweAPI.load(file);
 
             if (clipboard == null) {
-                return null;
+                throw new IllegalStateException("Schematic clipboard is null");
             }
 
             return new Schematic(clipboard);

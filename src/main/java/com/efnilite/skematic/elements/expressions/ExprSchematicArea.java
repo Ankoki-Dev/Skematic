@@ -11,14 +11,13 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import com.efnilite.skematic.object.FaweSchematic;
-import com.efnilite.skematic.object.SchematicLoader;
 import com.sk89q.worldedit.math.BlockVector3;
 import org.bukkit.event.Event;
 
 import java.io.File;
 import java.nio.file.Paths;
 
-@Name("Fawe - FaweSchematic dimensions")
+@Name("Fawe - Schematic dimensions")
 @Description("Gets one of the schematic dimensions (width, length or height)")
 @Examples("set {_width} to the width of the skematic \"plugins/Transport/Berm.schematic\"")
 @Since("1.0")
@@ -45,8 +44,8 @@ public class ExprSchematicArea extends SimpleExpression<Number> {
         FaweSchematic schematic;
         if (this.schematic.getSingle(e) instanceof String) {
             String file = (String) this.schematic.getSingle(e);
-            if (SchematicLoader.getSchematics().containsKey(file)) {
-                schematic = SchematicLoader.get(file);
+            if (FaweSchematic.getSchematics().containsKey(file)) {
+                schematic = FaweSchematic.get(file);
             } else if (Paths.get(file).toFile().exists()) {
                 schematic = new FaweSchematic(new File(file));
             } else {

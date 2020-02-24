@@ -63,13 +63,9 @@ public class ExprCuboidRegion extends SimpleExpression<CuboidRegion> {
             return null;
         }
 
-        World world = location1.getWorld();
+        World world = location1.getWorld() == null ? location2.getWorld() : location1.getWorld();
 
-        if (location1.getWorld() == null) {
-            world = location2.getWorld();
-        }
-
-        last = new CuboidRegion(FaweUtil.getWorld(world.getName()),
+        last = new CuboidRegion(FaweUtil.getWorld(world),
                 FaweUtil.toVector(location1),
                 FaweUtil.toVector(location2));
         return new CuboidRegion[] { last };

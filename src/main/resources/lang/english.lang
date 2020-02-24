@@ -7,4 +7,3 @@ fawe schematicformat:
 fawe pasteoption:
     air: air
     entities: entities, mobs, animals
-    biomes: biome, biomes

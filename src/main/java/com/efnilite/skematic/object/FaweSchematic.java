@@ -1,6 +1,8 @@
 package com.efnilite.skematic.object;
 
+import ch.njol.skript.Skript;
 import com.boydti.fawe.object.clipboard.ReadOnlyClipboard;
+import com.boydti.fawe.object.schematic.Schematic;
 import com.efnilite.skematic.util.FaweUtil;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
@@ -16,12 +18,23 @@ import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Set;
 
 /**
  * A wrapper class for schematics
  */
 public class FaweSchematic {
+
+    /**
+     * The loaded schematics
+     */
+    private static HashMap<String, FaweSchematic> schematics = new HashMap<>();
+
+    /**
+     * The last loaded schematic
+     */
+    private static FaweSchematic lastLoaded;
 
     /**
      * The file
@@ -41,7 +54,12 @@ public class FaweSchematic {
      */
     public FaweSchematic(File file) {
         this.file = file;
-        this.clipboard = FaweUtil.toSchematic(file).getClipboard();
+        Schematic schematic = FaweUtil.toSchematic(file);
+        if (schematic == null) {
+            Skript.error("Invalid file with new instance");
+            return;
+        }
+        this.clipboard = schematic.getClipboard();
     }
 
     /**
@@ -52,7 +70,7 @@ public class FaweSchematic {
      */
     public FaweSchematic(CuboidRegion cuboid) {
         this.file = null;
-        this.clipboard = new BlockArrayClipboard(cuboid, ReadOnlyClipboard.of(cuboid.getWorld(), cuboid));
+        this.clipboard = new BlockArrayClipboard(cuboid, (Clipboard) ReadOnlyClipboard.of(cuboid.getWorld(), cuboid));
     }
 
     /**
@@ -68,17 +86,34 @@ public class FaweSchematic {
      *          The {@link FaweOptions} used for pasting
      */
     public void paste(World world, BlockVector3 vector, Set<FaweOptions> options) {
-        EditSession session = FaweUtil.getEditSession(Bukkit.getWorld(world.getName()));
+        org.bukkit.World w = Bukkit.getWorld(world.getName());
+        if (w == null) {
+            Skript.error("World is null (" + getClass().getName() + ") - be sure to set the world of a location!");
+            return;
+        }
+        EditSession session = FaweUtil.getEditSession(w);
         Operation operation = new ClipboardHolder(clipboard)
                 .createPaste(session.getRegionExtent())
                 .to(vector)
                 .ignoreAirBlocks(!options.contains(FaweOptions.AIR))
-                .ignoreEntities(!options.contains(FaweOptions.ENTITIES))
-                .ignoreBiomes(!options.contains(FaweOptions.BIOMES))
+                .copyEntities(!options.contains(FaweOptions.ENTITIES))
                 .build();
         Operations.completeLegacy(operation);
 
         session.flushQueue();
+    }
+
+    public static void add(String alias, FaweSchematic schematic) {
+        schematics.put(alias, schematic);
+        lastLoaded = schematic;
+    }
+
+    public static FaweSchematic get(String alias) {
+        return schematics.get(alias);
+    }
+
+    public static void remove(String alias) {
+        schematics.remove(alias);
     }
 
     /**
@@ -92,10 +127,25 @@ public class FaweSchematic {
      */
     public void save(File file, BuiltInClipboardFormat format) {
         try {
-            FaweUtil.toSchematic(file).save(file, format);
+            Schematic schematic = FaweUtil.toSchematic(file);
+
+            if (schematic == null) {
+                Skript.error("Invalid file while trying to save schematic!");
+                return;
+            }
+
+            schematic.save(file, format);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static HashMap<String, FaweSchematic> getSchematics() {
+        return schematics;
+    }
+
+    public static FaweSchematic getLastLoaded() {
+        return lastLoaded;
     }
 
     /**

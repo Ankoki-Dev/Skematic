@@ -54,6 +54,7 @@ public class ExprCuboidRegionPoints extends SimpleExpression<BlockVector3> {
                 vector = cuboid.getMinimumPoint();
                 break;
             default:
+                Skript.error("No parse mark (?)");
                 vector = null;
                 break;
         }

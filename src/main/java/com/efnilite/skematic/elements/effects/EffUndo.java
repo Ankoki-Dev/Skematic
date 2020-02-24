@@ -42,7 +42,7 @@ public class EffUndo extends Effect {
             return;
         }
 
-        EditSession session = FaweUtil.getPlayer(player).getNewEditSession();
+        EditSession session = FaweUtil.getEditSession(player);
         session.undo(session);
         session.flushQueue();
     }

@@ -60,7 +60,7 @@ public class EffShapeLine extends Effect {
             filled = false;
         }
 
-        EditSession session = FaweUtil.getEditSession(location1.getWorld());
+        EditSession session = FaweUtil.getEditSession(location1.getWorld() == null ? location2.getWorld() : location1.getWorld());
         session.drawLine(FaweUtil.parsePattern(blocks), FaweUtil.toVector(location1), FaweUtil.toVector(location2), Math.round((long) radius), filled);
         session.flushQueue();
     }

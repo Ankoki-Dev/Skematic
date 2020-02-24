@@ -1,10 +1,10 @@
 package com.efnilite.skematic.elements.expressions;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
-import com.boydti.fawe.object.FawePlayer;
 import com.efnilite.skematic.util.FaweUtil;
 import com.sk89q.worldedit.command.tool.InvalidToolBindException;
 import org.bukkit.entity.Player;
@@ -20,11 +20,15 @@ public class ExprBrushSize extends SimplePropertyExpression<Player, Number> {
 
     @Override
     public Number convert(Player player) {
-        FawePlayer fPlayer = FaweUtil.getPlayer(player);
+        if (player == null) {
+            Skript.error("Player is null");
+            return 0;
+        }
         try {
-            return fPlayer.getSession().getBrushTool(fPlayer.toWorldEditPlayer()).getSize();
+            return FaweUtil.getLocalSession(player).getBrushTool(FaweUtil.getPlayer(player)).getSize();
         } catch (InvalidToolBindException e) {
-            return null;
+            Skript.error("Invalid tool bind (ExprBrushSize.class)");
+            return 0;
         }
     }
 

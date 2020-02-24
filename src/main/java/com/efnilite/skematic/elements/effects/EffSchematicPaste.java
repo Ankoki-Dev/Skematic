@@ -11,7 +11,6 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import com.efnilite.skematic.object.FaweOptions;
 import com.efnilite.skematic.object.FaweSchematic;
-import com.efnilite.skematic.object.SchematicLoader;
 import com.efnilite.skematic.util.FaweUtil;
 import com.sk89q.worldedit.math.BlockVector3;
 import org.bukkit.Location;
@@ -59,8 +58,8 @@ public class EffSchematicPaste extends Effect {
         FaweSchematic schematic;
         if (this.schematic.getSingle(e) instanceof String) {
             String file = (String) this.schematic.getSingle(e);
-            if (SchematicLoader.getSchematics().containsKey(file)) {
-                schematic = SchematicLoader.get(file);
+            if (FaweSchematic.getSchematics().containsKey(file)) {
+                schematic = FaweSchematic.get(file);
             } else if (Paths.get(file).toFile().exists()) {
                 schematic = new FaweSchematic(new File(file));
             } else {
@@ -76,7 +75,7 @@ public class EffSchematicPaste extends Effect {
         Set<FaweOptions> optionsSet = new HashSet<>(Arrays.asList(options));
 
         BlockVector3 vector = FaweUtil.toVector(location);
-        schematic.paste(FaweUtil.getWorld(location.getWorld().getName()), vector, optionsSet);
+        schematic.paste(FaweUtil.getWorld(location.getWorld()), vector, optionsSet);
     }
 
     @Override

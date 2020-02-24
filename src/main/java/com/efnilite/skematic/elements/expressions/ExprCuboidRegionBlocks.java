@@ -15,7 +15,6 @@ import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.util.Countable;
 import com.sk89q.worldedit.world.block.BlockState;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
@@ -28,17 +27,19 @@ import java.util.List;
 @Since("2.0")
 public class ExprCuboidRegionBlocks extends SimpleExpression<ItemType> {
 
+    private int mark;
     private Expression<CuboidRegion> cuboid;
 
     static {
         Skript.registerExpression(ExprCuboidRegionBlocks.class, ItemType.class, ExpressionType.PROPERTY,
-                "[(all [[of] the]|the)] fawe blocks in %fawe cuboidregions%",
-                "[(all [[of] the]|the)] %fawe cuboidregions%'[s] fawe blocks");
+                "[(all [[of] the]|the)] fawe blocks in %fawe cuboidregions% [(1¦seperat(ing|ed) state[s])]",
+                "[(all [[of] the]|the)] %fawe cuboidregions%'[s] fawe blocks [(1¦seperat(ing|ed) state[s])]");
     }
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
 
+        mark = parseResult.mark;
         cuboid = (Expression<CuboidRegion>) expressions[0];
 
         return true;
@@ -52,8 +53,8 @@ public class ExprCuboidRegionBlocks extends SimpleExpression<ItemType> {
             return null;
         }
 
-        EditSession session = FaweUtil.getEditSession(Bukkit.getServer().getWorld(cuboid.getWorld().getName()));
-        List<Countable<BlockState>> blocks = session.getBlockDistributionWithData(cuboid);
+        EditSession session = FaweUtil.getEditSession(cuboid.getWorld());
+        List<Countable<BlockState>> blocks = session.getBlockDistribution(cuboid, mark == 1);
         List<ItemType> materials = new ArrayList<>();
 
         if (blocks == null) {

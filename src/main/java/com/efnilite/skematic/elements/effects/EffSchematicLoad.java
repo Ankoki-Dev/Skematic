@@ -12,7 +12,6 @@ import ch.njol.skript.lang.Variable;
 import ch.njol.skript.util.AsyncEffect;
 import ch.njol.util.Kleenean;
 import com.efnilite.skematic.object.FaweSchematic;
-import com.efnilite.skematic.object.SchematicLoader;
 import org.bukkit.event.Event;
 
 import java.io.File;
@@ -59,7 +58,7 @@ public class EffSchematicLoad extends AsyncEffect {
         if (var != null) {
             var.change(e, change, Changer.ChangeMode.SET);
         }
-        SchematicLoader.add(alias, schem);
+        FaweSchematic.add(alias, schem);
     }
 
     @Override

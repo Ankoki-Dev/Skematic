@@ -9,7 +9,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.util.AsyncEffect;
 import ch.njol.util.Kleenean;
-import com.efnilite.skematic.object.SchematicLoader;
+import com.efnilite.skematic.object.FaweSchematic;
 import org.bukkit.event.Event;
 
 @Name("Fawe - Unload schematic")
@@ -40,7 +40,7 @@ public class EffSchematicUnload extends AsyncEffect {
             return;
         }
 
-        SchematicLoader.remove(schematic);
+        FaweSchematic.remove(schematic);
     }
 
     @Override

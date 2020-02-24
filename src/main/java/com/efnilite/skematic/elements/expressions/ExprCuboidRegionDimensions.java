@@ -51,6 +51,7 @@ public class ExprCuboidRegionDimensions extends SimpleExpression<Number> {
             case 3:
                 return new Number[] { cuboid.getWidth() };
             default:
+                Skript.error("No parse mark (?)");
                 return new Number[] { 0 };
         }
     }
