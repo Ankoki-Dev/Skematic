@@ -12,7 +12,6 @@ import ch.njol.util.Kleenean;
 import com.efnilite.skematic.util.FaweUtil;
 import com.sk89q.worldedit.EditSession;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.event.Event;
 
 @Name("Fawe - Greenify")

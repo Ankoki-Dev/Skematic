@@ -2,12 +2,12 @@ package com.efnilite.skematic.object;
 
 import ch.njol.skript.Skript;
 import com.boydti.fawe.object.clipboard.ReadOnlyClipboard;
-import com.boydti.fawe.object.schematic.Schematic;
 import com.efnilite.skematic.util.FaweUtil;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.BuiltInClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.SchematicReader;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
@@ -54,6 +54,7 @@ public class FaweSchematic {
      */
     public FaweSchematic(File file) {
         this.file = file;
+        SchematicReader
         Schematic schematic = FaweUtil.toSchematic(file);
         if (schematic == null) {
             Skript.error("Invalid file with new instance");
@@ -70,7 +71,7 @@ public class FaweSchematic {
      */
     public FaweSchematic(CuboidRegion cuboid) {
         this.file = null;
-        this.clipboard = new BlockArrayClipboard(cuboid, (Clipboard) ReadOnlyClipboard.of(cuboid.getWorld(), cuboid));
+        this.clipboard = new BlockArrayClipboard(cuboid, ReadOnlyClipboard.of(cuboid.getWorld(), cuboid));
     }
 
     /**
@@ -133,6 +134,7 @@ public class FaweSchematic {
                 Skript.error("Invalid file while trying to save schematic!");
                 return;
             }
+
 
             schematic.save(file, format);
         } catch (IOException e) {

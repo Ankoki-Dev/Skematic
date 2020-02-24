@@ -12,8 +12,6 @@ import ch.njol.util.Kleenean;
 import com.efnilite.skematic.util.FaweUtil;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.regions.CuboidRegion;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.event.Event;
 
 @Name("Fawe - Fill walls")

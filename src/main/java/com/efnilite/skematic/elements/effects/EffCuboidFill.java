@@ -10,15 +10,10 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import com.efnilite.skematic.util.FaweUtil;
-import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.event.Event;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 @Name("Fawe - Fill Region")
 @Description("Fill a region (selection) with a block.")
