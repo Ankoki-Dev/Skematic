@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.efnilite'
-version '1.0'
+version '3.0'
 
 repositories {
     mavenCentral()

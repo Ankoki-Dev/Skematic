@@ -6,8 +6,7 @@ import com.efnilite.skematic.util.FaweUtil;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.extent.clipboard.io.BuiltInClipboardFormat;
-import com.sk89q.worldedit.extent.clipboard.io.SchematicReader;
+import com.sk89q.worldedit.extent.clipboard.io.*;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
@@ -17,7 +16,10 @@ import com.sk89q.worldedit.world.World;
 import org.bukkit.Bukkit;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -54,13 +56,24 @@ public class FaweSchematic {
      */
     public FaweSchematic(File file) {
         this.file = file;
-        SchematicReader
-        Schematic schematic = FaweUtil.toSchematic(file);
-        if (schematic == null) {
-            Skript.error("Invalid file with new instance");
-            return;
+        try {
+            FileOutputStream stream = new FileOutputStream(file);
+            ClipboardFormat format = ClipboardFormats.findByFile(file);
+
+            if (format == null) {
+                Skript.error("Format is null");
+                return;
+            }
+
+            ClipboardReader reader = format.getReader(new FileInputStream(file));
+            this.clipboard = reader.read();
+
+            stream.close();
+            reader.close();
+        } catch (IOException e) {
+            Skript.error("There was an error while trying to load schematic " + file.getName());
+            e.printStackTrace();
         }
-        this.clipboard = schematic.getClipboard();
     }
 
     /**
@@ -87,12 +100,7 @@ public class FaweSchematic {
      *          The {@link FaweOptions} used for pasting
      */
     public void paste(World world, BlockVector3 vector, Set<FaweOptions> options) {
-        org.bukkit.World w = Bukkit.getWorld(world.getName());
-        if (w == null) {
-            Skript.error("World is null (" + getClass().getName() + ") - be sure to set the world of a location!");
-            return;
-        }
-        EditSession session = FaweUtil.getEditSession(w);
+        EditSession session = FaweUtil.getEditSession(Bukkit.getWorld(world.getName()));
         Operation operation = new ClipboardHolder(clipboard)
                 .createPaste(session.getRegionExtent())
                 .to(vector)
@@ -126,18 +134,18 @@ public class FaweSchematic {
      * @param   format
      *          The format used
      */
+    @SuppressWarnings("ConstantConditions")
     public void save(File file, BuiltInClipboardFormat format) {
-        try {
-            Schematic schematic = FaweUtil.toSchematic(file);
+        try { // from FAWE
+            // Closer closer = Closer.create(); closes Closeables (e.g. OutputStream, InputStream, etc.) to reduce ram usage (used in FAWE)
+            FileOutputStream stream = new FileOutputStream(file);
+            ClipboardWriter writer = ClipboardFormats.findByAlias(new ArrayList<>(format.getAliases()).get(0)).getWriter(stream);
+            writer.write(clipboard);
 
-            if (schematic == null) {
-                Skript.error("Invalid file while trying to save schematic!");
-                return;
-            }
-
-
-            schematic.save(file, format);
+            stream.close();
+            writer.close();
         } catch (IOException e) {
+            Skript.error("There was an error while trying to save schematic " + file.getName());
             e.printStackTrace();
         }
     }

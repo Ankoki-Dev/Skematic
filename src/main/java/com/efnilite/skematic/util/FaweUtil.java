@@ -3,11 +3,9 @@ package com.efnilite.skematic.util;
 import ch.njol.skript.Skript;
 import ch.njol.skript.aliases.ItemType;
 import com.boydti.fawe.FaweAPI;
-import com.boydti.fawe.object.schematic.Schematic;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.function.pattern.BlockPattern;
 import com.sk89q.worldedit.function.pattern.Pattern;
 import com.sk89q.worldedit.function.pattern.RandomPattern;
@@ -16,9 +14,6 @@ import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.block.BaseBlock;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-
-import java.io.File;
-import java.io.IOException;
 
 @SuppressWarnings("deprecation")
 public class FaweUtil {
@@ -143,27 +138,5 @@ public class FaweUtil {
             }
         }
         return parsedPattern;
-    }
-
-    /**
-     * Wraps a file to a FaweSchematic
-     *
-     * @param   file
-     *          The file to be changed to a FaweSchematic
-     *
-     * @return  a FaweSchematic instance
-     */
-    public static Schematic toSchematic(File file) {
-        try {
-            Clipboard clipboard = FaweAPI.load(file);
-
-            if (clipboard == null) {
-                throw new IllegalStateException("Schematic clipboard is null");
-            }
-
-            return new Schematic(clipboard);
-        } catch (IOException e) {
-            return null;
-        }
     }
 }

@@ -1,9 +1,9 @@
 version: 3.0
-fawe schematicformat:
+schematicformat:
     schematic: schematic, mcedit, mce
     structure: structure, nbt
     png: png, image
     fawe: fawe
-fawe pasteoption:
+pasteoption:
     air: air
     entities: entities, mobs, animals

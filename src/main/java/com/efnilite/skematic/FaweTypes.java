@@ -15,7 +15,7 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 public class FaweTypes {
 
     public FaweTypes() {
-        Classes.registerClass(new ClassInfo<>(CuboidRegion.class, "fawe cuboidregion")
+        Classes.registerClass(new ClassInfo<>(CuboidRegion.class, "cuboidregion")
                 .user("fawe cuboidregions?")
                 .name("Fawe Cuboidregion")
                 .description("A virtual region selection.")
@@ -48,7 +48,7 @@ public class FaweTypes {
                     }
                 }));
 
-        Classes.registerClass(new ClassInfo<>(FaweSchematic.class, "fawe schematic")
+        Classes.registerClass(new ClassInfo<>(FaweSchematic.class, "schematic")
                 .user("fawe schematics?")
                 .name("Fawe Schematic")
                 .description("A fawe schematic file.")
@@ -81,12 +81,12 @@ public class FaweTypes {
                     }
                 }));
 
-        EnumUtils<FaweOptions> pasteOptions = new EnumUtils<>(FaweOptions.class, "fawe pasteoption");
-        Classes.registerClass(new ClassInfo<>(FaweOptions.class, "fawe pasteoption")
+        EnumUtils<FaweOptions> pasteOptions = new EnumUtils<>(FaweOptions.class, "pasteoption");
+        Classes.registerClass(new ClassInfo<>(FaweOptions.class, "pasteoption")
                 .defaultExpression(new EventValueExpression<>(FaweOptions.class))
                 .user("fawe pasteoptions?")
                 .name("Fawe Paste Options")
-                .description("Options to change how you paste a fawe schematic/cuboidregion. Current options: air, entities and biomes")
+                .description("Options to change how you paste a fawe schematic/cuboidregion. Current options: air, entities")
                 .since("2.1")
                 .parser(new Parser<FaweOptions>() {
 
@@ -111,8 +111,8 @@ public class FaweTypes {
                     }
                 }));
 
-        EnumUtils<BuiltInClipboardFormat> clipboardFormats = new EnumUtils<>(BuiltInClipboardFormat.class, "fawe schematicformat");
-        Classes.registerClass(new ClassInfo<>(ClipboardFormat.class, "fawe schematicformat")
+        EnumUtils<BuiltInClipboardFormat> clipboardFormats = new EnumUtils<>(BuiltInClipboardFormat.class, "schematicformat");
+        Classes.registerClass(new ClassInfo<>(ClipboardFormat.class, "schematicformat")
                 .defaultExpression(new EventValueExpression<>(BuiltInClipboardFormat.class))
                 .user("fawe schematicformats?")
                 .name("Fawe FaweSchematic Format")
